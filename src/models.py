@@ -31,7 +31,8 @@ class Planets(Base):
     rotation_period = Column(Integer)
     surface_water = Column(Integer)
     terrain = Column(String)
-    planets_id = Column(Integer, ForeignKey('user.id'))
+    planets_id = Column(Integer, ForeignKey('user.id',))
+    favorite = Column(Integer, ForeignKey('favorite.planets_id'))
 
     user = relationship('User', back_populates='planets')
     favorite = relationship('Favorite', back_populates='planets')
@@ -47,35 +48,36 @@ class People(Base):
     birthdate = Column(Integer)
     gender = Column(String)
     people_id  = Column(Integer, ForeignKey('user.id'))
+    favorite_id = Column(Integer, Foreingkey('favorite.people_id'))
 
     users = relationship('User', back_populates='people')
     favorites = relationship('Favorite', back_populates='people')
 
 class Favorite(Base):
     __tablename__ = 'favorite'
-    planets_id = Column(Integer, ForeignKey('planets.id') primary_key=True)
-    people_id = Column(Integer, ForeignKey('people.id') primary_key=True)
+    planets_id = Column(Integer, primary_key=True)
+    people_id = Column(Integer, primary_key=True)
 
     planets = relationship('Planets', back_populates='favorite')
     peoples = relationship('People', back_populates='favorite')
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+# class Person(Base):
+#     __tablename__ = 'person'
+#     # Here we define columns for the table person
+#     # Notice that each column is also a normal Python instance attribute.
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String(250), nullable=False)
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+# class Address(Base):
+#     __tablename__ = 'address'
+#     # Here we define columns for the table address.
+#     # Notice that each column is also a normal Python instance attribute.
+#     id = Column(Integer, primary_key=True)
+#     street_name = Column(String(250))
+#     street_number = Column(String(250))
+#     post_code = Column(String(250), nullable=False)
+#     person_id = Column(Integer, ForeignKey('person.id'))
+#     person = relationship(Person)
 
     def to_dict(self):
         return {}
