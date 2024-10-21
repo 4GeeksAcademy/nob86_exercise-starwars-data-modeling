@@ -16,8 +16,8 @@ class User(Base):
     suscription_data = Column(String(50), nullable=False)
     birthdate = Column(Integer, nullable=False)
 
-    planet = relationship('Planets', back_populates='user')
-    people = relationship('People', back_populates='user')
+    # planet = relationship('Planets', back_populates='user')
+    # people = relationship('People', back_populates='user')
 
 class Planets(Base):
     __tablename__ = 'planets'
@@ -34,7 +34,7 @@ class Planets(Base):
     planets_id = Column(Integer, ForeignKey('user.id',))
     favorite = Column(Integer, ForeignKey('favorite.planets_id'))
 
-    user = relationship('User', back_populates='planets')
+    # user = relationship('User', back_populates='planets')
     favorite = relationship('Favorite', back_populates='planets')
 
 class People(Base):
@@ -47,16 +47,17 @@ class People(Base):
     eyes_coloe = Column(String)
     birthdate = Column(Integer)
     gender = Column(String)
-    people_id  = Column(Integer, ForeignKey('user.id'))
-    favorite_id = Column(Integer, Foreingkey('favorite.people_id'))
+    # people_id  = Column(Integer, ForeignKey('user.id'))
+    # favorite_id = Column(Integer, ForeignKey('favorite.people_id'))
 
-    users = relationship('User', back_populates='people')
+    # users = relationship('User', back_populates='people')
     favorites = relationship('Favorite', back_populates='people')
 
 class Favorite(Base):
     __tablename__ = 'favorite'
-    planets_id = Column(Integer, primary_key=True)
-    people_id = Column(Integer, primary_key=True)
+    planets_id = Column(Integer, ForeignKey('planets.id'), primary_key=True, nullable=True)
+    people_id = Column(Integer, ForeignKey('people.id'), primary_key=True, nullable=True)
+    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True, nullable=False)
 
     planets = relationship('Planets', back_populates='favorite')
     peoples = relationship('People', back_populates='favorite')
